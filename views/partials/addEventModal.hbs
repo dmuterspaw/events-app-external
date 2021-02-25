@@ -1,0 +1,27 @@
+<div class="is-flex-grow-1 is-flex-shrink-1 is-flex is-align-items-center">
+  <button class="button is-link modal-button" type="button" data-target="add-event-modal">add event</button>
+  <div class="modal modal-fx-fadeInScale" id="add-event-modal">
+    <div class="modal-content">
+      <div class="columns is-mobile is-flex-grow-1">
+        <div class="column is-half is-offset-one-quarter p-5 has-background-link-light" style="border-radius: 10px">
+          <p class="title">
+            add an event
+          </p>
+          <div class="control">
+            <form action="/event" method="post">
+              <div class="field">
+                <input name="title" class="input is-small rounded-input" placeholder="title" type="text" />
+              </div>
+              <div class="field">
+                <textarea class="textarea is-rounded is-small rounded-input" name="description"
+                  placeholder="what is this event about?" type="text"></textarea>
+              </div>
+              <br />
+              <input type="submit" name="submit" value="submit" class="button is-link" />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

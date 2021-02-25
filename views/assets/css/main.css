@@ -1,0 +1,7 @@
+* {
+  font-family: 'Overpass', sans-serif;
+}
+
+.rounded-input {
+  border-radius: 5px !important;
+}
