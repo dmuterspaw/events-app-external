@@ -22,17 +22,22 @@ const hbs = require('express-handlebars')
 // details here: https://www.npmjs.com/package/request
 var request = require('request')
 
+let events = []
+
 // create the server
 const app = express()
+
+const exHbs = hbs.create({
+    // Specify helpers which are only registered on this instance.
+    extname: 'hbs',
+    defaultView: 'default'
+});
 
 // set up handlbars as the templating engine
 app.set('view engine', 'hbs')
 app.engine(
   'hbs',
-  hbs({
-    extname: 'hbs',
-    defaultView: 'default',
-  })
+  exHbs.engine
 )
 app.use('/assets', express.static(path.join(__dirname, 'views/assets')))
 
@@ -79,20 +84,35 @@ app.get('/', (req, res) => {
         console.log('error:', error) // Print the error if one occurred
         console.log('statusCode:', response && response.statusCode) // Print the response status code if a response was received
         console.log(body) // print the return from the server microservice
+        events = body.events.map(event => ({
+            ...event,
+            color: generateTileColor(),
+          }))
+
         res.render('home', {
           layout: 'default', //the outer html page
           template: 'index-template', // the partial view inserted into
           // {{body}} in the layout - the code
           // in here inserts values from the JSON
           // received from the server
-          events: body.events.map(event => ({
-            ...event,
-            color: generateTileColor(),
-          })),
+          showEventModal: false,
+          events
         }) // pass the data from the server to the template
       }
     }
   )
+})
+
+app.get('/event-modal', (req, res) => {
+    res.render('home', {
+          layout: 'default', //the outer html page
+          template: 'index-template', // the partial view inserted into
+          // {{body}} in the layout - the code
+          // in here inserts values from the JSON
+          // received from the server
+          showEventModal: true,
+          events
+        }) // pass the data from the server to the template
 })
 
 // defines a route that receives the post request to /event

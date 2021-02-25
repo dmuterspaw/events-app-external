@@ -1,8 +1,10 @@
 <div class="is-flex-grow-1 is-flex-shrink-1 is-flex is-align-items-center">
-  <button class="button is-link modal-button" type="button" data-target="add-event-modal">add event</button>
-  <div class="modal modal-fx-fadeInScale" id="add-event-modal">
-    <div class="modal-content">
-      <div class="columns is-mobile is-flex-grow-1">
+  <a class="button is-link modal-button" href="/event-modal">add event</a>
+  {{#if showEventModal}}
+  <div class="modal modal-fx-fadeInScale is-active" id="add-event-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content" style="overflow:hidden">
+      <div class="columns is-mobile is-flex-grow-1" style="border-radius: 10px">
         <div class="column is-half is-offset-one-quarter p-5 has-background-link-light" style="border-radius: 10px">
           <p class="title">
             add an event
@@ -17,11 +19,14 @@
                   placeholder="what is this event about?" type="text"></textarea>
               </div>
               <br />
-              <input type="submit" name="submit" value="submit" class="button is-link" />
+              <a href="/">
+                <input type="submit" name="submit" value="submit" class="button is-link"  />
+              </a>
             </form>
           </div>
         </div>
       </div>
     </div>
   </div>
+  {{/if}}
 </div>
