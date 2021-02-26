@@ -28,17 +28,14 @@ let events = []
 const app = express()
 
 const exHbs = hbs.create({
-    // Specify helpers which are only registered on this instance.
-    extname: 'hbs',
-    defaultView: 'default'
-});
+  // Specify helpers which are only registered on this instance.
+  extname: 'hbs',
+  defaultView: 'default'
+})
 
 // set up handlbars as the templating engine
 app.set('view engine', 'hbs')
-app.engine(
-  'hbs',
-  exHbs.engine
-)
+app.engine('hbs', exHbs.engine)
 app.use('/assets', express.static(path.join(__dirname, 'views/assets')))
 
 // set up the parser to get the contents of data from html forms
@@ -53,7 +50,7 @@ const colors = [
   '#540061',
   '#003049',
   '#d62828',
-  '#00614B',
+  '#00614B'
 ]
 
 const generateTileColor = () => colors[Math.floor(Math.random() * 6)]
@@ -69,7 +66,7 @@ app.get('/', (req, res) => {
     // first argument: url + return format
     {
       url: SERVER + '/events', // the microservice end point for events
-      json: true, // response from server will be json format
+      json: true // response from server will be json format
     }, // second argument: function with three args,
     // runs when server response received
     // body hold the return from the server
@@ -78,16 +75,17 @@ app.get('/', (req, res) => {
         console.log('error:', error) // Print the error if one occurred
         res.render('error_message', {
           layout: 'default', //the outer html page
-          error: error, // pass the data from the server to the template
+          error: error // pass the data from the server to the template
         })
       } else {
         console.log('error:', error) // Print the error if one occurred
         console.log('statusCode:', response && response.statusCode) // Print the response status code if a response was received
         console.log(body) // print the return from the server microservice
         events = body.events.map(event => ({
-            ...event,
-            color: generateTileColor(),
-          }))
+          ...event,
+          //likes: 0,
+          color: generateTileColor()
+        }))
 
         res.render('home', {
           layout: 'default', //the outer html page
@@ -104,15 +102,37 @@ app.get('/', (req, res) => {
 })
 
 app.get('/event-modal', (req, res) => {
-    res.render('home', {
-          layout: 'default', //the outer html page
-          template: 'index-template', // the partial view inserted into
-          // {{body}} in the layout - the code
-          // in here inserts values from the JSON
-          // received from the server
-          showEventModal: true,
-          events
-        }) // pass the data from the server to the template
+  res.render('home', {
+    layout: 'default', //the outer html page
+    template: 'index-template', // the partial view inserted into
+    // {{body}} in the layout - the code
+    // in here inserts values from the JSON
+    // received from the server
+    showEventModal: true,
+    events
+  }) // pass the data from the server to the template
+})
+
+app.post('/like', urlencodedParser, (req, res) => {
+  const event = events.find(event => event.id === req.body.eventId)
+  if (event) {
+request.put(
+    {
+      url: `${SERVER}/event/${event.id}/like`,
+      json: true,
+      body: {
+        id: event.id,
+        likes: event.likes ? event.likes + 1 : 1
+      }
+    },
+    (error, response, body) => {
+      res.redirect('/')
+    }
+  )
+  } else {
+    res.redirect('/')
+  }
+  
 })
 
 // defines a route that receives the post request to /event
@@ -133,9 +153,9 @@ app.post(
         body: req.body, // content of the form
         headers: {
           // uploading json
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        json: true, // response from server will be json format
+        json: true // response from server will be json format
       },
       (error, response, body) => {
         // third argument: function with three args,

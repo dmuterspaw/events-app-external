@@ -17,9 +17,9 @@ describe('GET /', function () {
           {
             title: 'another event',
             id: 5678,
-            description: 'something even cooler',
-          },
-        ],
+            description: 'something even cooler'
+          }
+        ]
       })
 
     request(app)
@@ -74,10 +74,10 @@ describe('POST /event', function () {
           {
             title: 'another event',
             id: 2,
-            description: 'something even cooler',
+            description: 'something even cooler'
           },
-          data,
-        ],
+          data
+        ]
       })
 
     request(app)

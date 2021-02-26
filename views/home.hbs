@@ -1,7 +1,7 @@
 <div class="columns is-mobile is-multiline is-flex-grow-1">
   {{#events}}
-    <div class="column is-one-third">
-      <article class="box" style="background-color:{{color}}">
+    <div class="column m-2 is-flex is-flex-direction-column box is-one-third event-container">
+      <article class="flex p-3" style="background-color:{{color}}">
         <p class="title has-text-white-ter">
           {{title}}
         </p>
@@ -9,6 +9,19 @@
           {{description}}
         </p>
       </article>
+      <div class="is-flex flex event-footer is-align-items-center is-justify-content-flex-end">
+          <p class="subtitle likes">
+              {{likes}}
+          </p>
+          <form action="/like" method="post">
+            <input style="visibility: hidden; width: 0px; height: 0px" name="eventId" value={{id}}></input>
+            <button class="button is-ghost" type="submit" style="border-color: transparent; outline: none">
+                <span class="icon has-text-link-dark">
+                    <i class="fas fa-md fa-heart is-info"></i>
+                </span>
+            </button>
+          </form>
+      </div>
     </div>
   {{/events}}
 </div>
