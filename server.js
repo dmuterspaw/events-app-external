@@ -116,23 +116,22 @@ app.get('/event-modal', (req, res) => {
 app.post('/like', urlencodedParser, (req, res) => {
   const event = events.find(event => event.id === req.body.eventId)
   if (event) {
-request.put(
-    {
-      url: `${SERVER}/event/${event.id}/like`,
-      json: true,
-      body: {
-        id: event.id,
-        likes: event.likes ? event.likes + 1 : 1
+    request.put(
+      {
+        url: `${SERVER}/event/${event.id}/like`,
+        json: true,
+        body: {
+          id: event.id,
+          likes: event.likes ? event.likes + 1 : 1
+        }
+      },
+      (error, response, body) => {
+        res.redirect('/')
       }
-    },
-    (error, response, body) => {
-      res.redirect('/')
-    }
-  )
+    )
   } else {
     res.redirect('/')
   }
-  
 })
 
 // defines a route that receives the post request to /event

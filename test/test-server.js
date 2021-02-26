@@ -30,9 +30,7 @@ describe('GET /', function () {
         if (err) {
           return done(err)
         }
-        chai.assert.isTrue(
-          res.text.includes('<p class="is-size-3 pl-2">IceKube Events</p>')
-        )
+        chai.assert.isTrue(res.text.includes("<title>IceKube's Events</title>"))
         return done()
       })
   })
