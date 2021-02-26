@@ -83,8 +83,7 @@ app.get('/', (req, res) => {
         console.log(body) // print the return from the server microservice
         events = body.events.map(event => ({
           ...event,
-          //likes: 0,
-          color: generateTileColor()
+          color: event.color && event.color !== '' ? event.color : generateTileColor()
         }))
 
         res.render('home', {
@@ -149,7 +148,10 @@ app.post(
       // first argument: url + data + formats
       {
         url: SERVER + '/event', // the microservice end point for adding an event
-        body: req.body, // content of the form
+        body: {
+            ...req.body,
+            color: generateTileColor()
+        },
         headers: {
           // uploading json
           'Content-Type': 'application/json'
